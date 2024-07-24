@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+<html lang="ru" xmlns="http://www.w3.org/1999/html">
+<head>
+    <!doctype html>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>New Page</title>
+</head>
+
+{% block content %}
+
+<body>
+<div id="container-fluid m=0 p=0"
+     style="background: url(static/head_image.png); background-repeat: no-repeat; background-size: cover; height: 150px;">
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-2">
+    </div>
+
+    <div class="col">
+        <div class="col">
+            <div class="container my-3">
+                <form method="post" class="row justify-content-center">
+                    <div class="col-9">
+                        <label for="city_name" class="visually-hidden"></label>
+                        <input type="text" class="form-control" id="city_name" name="city_name"
+                               placeholder="Название города"
+                               required>
+                    </div>
+                    <div class="col-2">
+                        <button type="submit" class="btn btn-primary">Поиск</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        {% if weather_data %}
+        <div class="container my-3">
+            <h2>Погода в {{city}}</h2>
+        </div>
+        <div class="container text-center">
+            <div class="row align-items-start">
+                {% for weather in weather_data %}
+                <div class="col">
+                    <div class="card" style="width: 18rem;">
+                        <div class="card-body">
+                            <h5 class="card-title">Погода на {{ weather.date }}</h5>
+                            <h6 class="card-subtitle mb-2 text-body-secondary">Температура: {{ weather.temperature
+                                }}°</h6>
+                            <h6 class="card-subtitle mb-2 text-body-secondary">Ощущается как: {{
+                                weather.apparent_temperature }}°</h6>
+                            <div class="row align-items-start">
+                                <div class="col">
+                                    <div class="card-body">
+                                        <h6 class="card-title">Скорость ветра:</h6>
+                                        <h5 class="card-subtitle mb-2 text-body-secondary">{{ weather.wind_speed }}м.с</h5>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="card-body">
+                                        <h6 class="card-title">Вероятность осадков:</h6>
+                                        <h5 class="card-subtitle mb-2 text-body-secondary">{{
+                                            weather.precipitation_probability }}%</h5>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="card-body">
+                                        <h6 class="card-title">Давление:</h6>
+                                        <h5 class="card-subtitle mb-2 text-body-secondary">{{ weather.surface_pressure
+                                            }}мм.рт.ст.</h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <div class="col-2">
+    </div>
+    {% endif %}
+</div>
+</body>
+</html>
+{% endblock %}
