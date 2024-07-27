@@ -8,8 +8,8 @@
 Создание API для сбора статистики просмотра городов в приложении. 
 
 ## Интерфейс готового приложения
-<img src="https://drive.google.com/uc?export=view&id=1igRGTRzYSVlcM7GnAP5_FBUWgsQiqXqe"<br/>
-<img src="https://drive.google.com/uc?export=view&id=11-5SbVeQA5DCwPJOHLzHo2YnDryB2egk"
+<img src="https://drive.google.com/uc?export=view&id=1igRGTRzYSVlcM7GnAP5_FBUWgsQiqXqe"><br/>
+<img src="https://drive.google.com/uc?export=view&id=11-5SbVeQA5DCwPJOHLzHo2YnDryB2egk">
 
 ## Интерфейс API
-<img src="https://drive.google.com/uc?export=view&id=1FUHjr5tjlrBP5t31eAgzxjw6jgUxApaX"
+<img src="https://drive.google.com/uc?export=view&id=1FUHjr5tjlrBP5t31eAgzxjw6jgUxApaX">
