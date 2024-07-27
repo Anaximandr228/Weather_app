@@ -23,7 +23,7 @@ def weather_results(city_name):
                data))
     return result
 
-# Разбиение координат на длину и широту
+# Разбиение координат на долготу и широту
 def get_coordinates(result):
     coordinate = result[0]['GeoObject']['Point']['pos']
     coordinates = coordinate.split(' ')
