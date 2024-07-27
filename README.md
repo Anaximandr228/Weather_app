@@ -13,3 +13,12 @@
 
 ## Интерфейс API
 <img src="https://drive.google.com/uc?export=view&id=1FUHjr5tjlrBP5t31eAgzxjw6jgUxApaX">
+
+## Для запуска проекта:
+1.Создайте пустую базу данных PostgreSQL<br/>
+2.В файле config.py внесите свои данные базы данных PostgreSQL<br/>
+3.Запустите файл 'create_db.py' для создания таблицы<br/>
+4.Запустите файл 'test_task.py' для проверки приложения<br/>
+
+### Используемы библиотеки
+Все используемы библиотеки перечислены в файле "requirements.txt"
