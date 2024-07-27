@@ -20,41 +20,63 @@
     </div>
 
     <div class="col">
-        <div class="col">
-            <div class="container my-3">
-                <form method="post" class="row justify-content-center">
-                    <div class="col-9">
-                        <label for="city_name" class="visually-hidden"></label>
-                        <input type="text" class="form-control" id="city_name" name="city_name"
-                               placeholder="Название города"
-                               required>
+        <div class="container my-3">
+            <form method="post" class="row justify-content-center">
+                <div class="col-8">
+                    <label for="city_name" class="visually-hidden"></label>
+                    <input type="text" class="form-control" id="city_name" name="city_name"
+                           placeholder="Название города"
+                           required>
+                </div>
+                <div class="col-2">
+                    <button type="submit" class="btn btn-primary">Поиск</button>
+                </div>
+            </form>
+        </div>
+
+
+        <div class="container my-3">
+            <div>Ранее вы просматривали:</div>
+            <div class="row align-items-center gy-3">
+                {% for user_id in users_list %}
+                <div class="col-auto">
+                    <div class="card m=3" style="width: 18rem;">
+                        <div class="card-body">
+                            <h5 class="card-title">Погода в {{ user_id.city_name }}</h5>
+                            <form method="post">
+                                <label for="city_name" class="visually-hidden"></label>
+                                <input type="hidden" name="city_name" value={{ user_id.city_name }}>
+                                <button type="submit" class="btn btn-primary">Поиск</button>
+                            </form>
+                        </div>
                     </div>
-                    <div class="col-2">
-                        <button type="submit" class="btn btn-primary">Поиск</button>
-                    </div>
-                </form>
+                </div>
+                {% endfor %}
             </div>
         </div>
+
         {% if weather_data %}
         <div class="container my-3">
             <h2>Погода в {{city}}</h2>
         </div>
         <div class="container text-center">
-            <div class="row align-items-start">
+            <div class="row align-items-center">
                 {% for weather in weather_data %}
-                <div class="col">
+                <div class="col-auto">
                     <div class="card" style="width: 18rem;">
                         <div class="card-body">
                             <h5 class="card-title">Погода на {{ weather.date }}</h5>
-                            <h6 class="card-subtitle mb-2 text-body-secondary">Температура: {{ weather.temperature
+                            <h6 class="card-subtitle mb-2 text-body-secondary">Температура: {{
+                                weather.temperature
                                 }}°</h6>
                             <h6 class="card-subtitle mb-2 text-body-secondary">Ощущается как: {{
                                 weather.apparent_temperature }}°</h6>
-                            <div class="row align-items-start">
+                            <div class="row align-items-center">
                                 <div class="col">
                                     <div class="card-body">
                                         <h6 class="card-title">Скорость ветра:</h6>
-                                        <h5 class="card-subtitle mb-2 text-body-secondary">{{ weather.wind_speed }}м.с</h5>
+                                        <h5 class="card-subtitle mb-2 text-body-secondary">{{ weather.wind_speed
+                                            }}м.с</h5>
                                     </div>
                                 </div>
                                 <div class="col">
@@ -67,7 +89,8 @@
                                 <div class="col">
                                     <div class="card-body">
                                         <h6 class="card-title">Давление:</h6>
-                                        <h5 class="card-subtitle mb-2 text-body-secondary">{{ weather.surface_pressure
+                                        <h5 class="card-subtitle mb-2 text-body-secondary">{{
+                                            weather.surface_pressure
                                             }}мм.рт.ст.</h5>
                                     </div>
                                 </div>
@@ -76,13 +99,15 @@
                     </div>
                 </div>
                 {% endfor %}
+
             </div>
         </div>
     </div>
+    {% endif %}
     <div class="col-2">
     </div>
-    {% endif %}
 </div>
+
 </body>
 </html>
 {% endblock %}

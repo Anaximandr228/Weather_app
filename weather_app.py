@@ -1,19 +1,18 @@
 from datetime import datetime
-
-import flask
+from uuid import uuid4
 import requests
-from flask import Flask, render_template, request, url_for, session, make_response
+from flask import Flask, render_template, request, make_response, jsonify
 import json
-from models import db
-
+from models import db, Users
 from config import password, db_name, user
 
+# Подключение к базе данных
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql://{user}:{password}@localhost/{db_name}'
 app.config['SECRET_KEY'] = 'secret-key-goes-here'
 db.init_app(app)
 
-
+# Получение координат города с помощь API
 def weather_results(city_name):
     url = f"https://geocode-maps.yandex.ru/1.x/?apikey=a2b400ac-c925-4aea-8cf0-206ceb9dcda3&geocode={city_name}&format=json"
     r = requests.get(url)
@@ -24,13 +23,13 @@ def weather_results(city_name):
                data))
     return result
 
-
+# Разбиение координат на длину и широту
 def get_coordinates(result):
     coordinate = result[0]['GeoObject']['Point']['pos']
     coordinates = coordinate.split(' ')
     return coordinates
 
-
+# Объявление главной страницы
 @app.route('/', methods=['GET', 'POST'])
 def render_results():
     if request.method == 'POST':
@@ -38,30 +37,6 @@ def render_results():
         city_name = request.form['city_name']
         coordinate = weather_results(city_name)
         coordinates = get_coordinates(coordinate)
-
-        def set_cookies():
-            response = make_response()
-            response.set_cookie('city_name', city_name)
-            return response
-
-        def get_cookies():
-            name = request.cookies.get('city_name')
-
-        set_cookies()
-        print(get_cookies())
-
-        # def func():
-        #     context = {}
-        #     context['text'] = 'Привет Мир!'
-        #     name = 'nikolay'
-        #
-        #
-        #     return response
-
-        # Cookies.get()
-        # bbb = request.cookies.get('user')
-        # a = func()
-        # print(a)
 
         r = requests.get(
             f'https://api.open-meteo.com/v1/forecast?latitude={coordinates[1]}&longitude={coordinates[0]}&hourly=temperature_2m,apparent_temperature,precipitation_probability,surface_pressure,wind_speed_10m&wind_speed_unit=ms&forecast_days=3')
@@ -92,11 +67,34 @@ def render_results():
             }
         ]
 
-        return render_template('index.html', weather_data=data, city=city_name, coordinates=coordinates)
+        user_id = request.cookies.get('user_id') if request.cookies.get('user_id') else str(uuid4())
+        new_item = Users(user_id=user_id, city_name=city_name)
+        db.session.add(new_item)
+        db.session.commit()
+        users_list = Users.query.distinct(Users.city_name).filter_by(user_id=user_id).all()
+        resp = make_response(render_template('index.html', weather_data=data, city=city_name, coordinates=coordinates,
+                                             users_list=users_list, user_id=user_id))
+        resp.set_cookie('user_id', user_id)
+        return resp
 
     if request.method == 'GET':
-        return render_template('index.html')
+        user_id = request.cookies.get('user_id') if request.cookies.get('user_id') else str(uuid4())
+        users_list = Users.query.distinct(Users.city_name).filter_by(user_id=user_id).all()
+        return render_template('index.html', users_list=users_list, user_id=user_id)
 
+# Объявление API для просмотра статитики запрашиваемых городов
+@app.route('/amount', methods=['GET'])
+def create_amount_list():
+    city_list = []
+    row_list = Users.query.distinct(Users.city_name).all()
 
+    for row in row_list:
+        city_list.append(row.city_name)
+        amount_list = {}
+        for i in range(len(city_list)):
+            amount_list[city_list[i]] = Users.query.filter_by(city_name=city_list[i]).count()
+    return jsonify(amount_list)
+
+# Запуск приложения
 if __name__ == "__main__":
     app.run(debug=True)
