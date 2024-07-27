@@ -40,7 +40,7 @@
             <div class="row align-items-center gy-3">
                 {% for user_id in users_list %}
                 <div class="col-auto">
-                    <div class="card m=3" style="width: 18rem;">
+                    <div class="card" style="width: 18rem;">
                         <div class="card-body">
                             <h5 class="card-title">Погода в {{ user_id.city_name }}</h5>
                             <form method="post">
@@ -107,7 +107,8 @@
     <div class="col-2">
     </div>
 </div>
-
+<div class="col-2">
+    </div>
 </body>
 </html>
 {% endblock %}
