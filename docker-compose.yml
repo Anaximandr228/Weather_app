@@ -9,10 +9,10 @@ services:
 
     environment:
       DEBUG: False
-      POSTGRES_DB: "weather"
+      POSTGRES_DB: ""  #Введите название базы данных postgres
       DATABASE_PORT: "5432"
-      POSTGRES_USER: "postgres"
-      POSTGRES_PASSWORD: "rtf558Ur"
+      POSTGRES_USER: ""  #Введите название пользователя базы данных
+      POSTGRES_PASSWORD: "" #Введите пароль пользователя базы данных
     ports:
       - "5000:5000"
     depends_on:
@@ -28,9 +28,9 @@ services:
     volumes:
       - db-data:/var/lib/postgresql
     environment:
-      POSTGRES_DB: "weather"
-      POSTGRES_USER: "postgres"
-      POSTGRES_PASSWORD: "rtf558Ur"
+      POSTGRES_DB: ""  #Введите название базы данных postgres
+      POSTGRES_USER: ""  #Введите название пользователя базы данных
+      POSTGRES_PASSWORD: ""  #Введите пароль пользователя базы данных
     ports:
       - "5432:5432"
 
