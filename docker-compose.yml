@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  web:
+    restart: always
+    build: .
+    links:
+      - postgres:postgres
+
+    environment:
+      DEBUG: False
+      POSTGRES_DB: "weather"
+      DATABASE_PORT: "5432"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "rtf558Ur"
+    ports:
+      - "5000:5000"
+    depends_on:
+      - postgres
+    command: >
+      sh -c "python app/create_db.py && python app/weather_app.py"
+      
+
+  postgres:
+    hostname: postgres
+    restart: always
+    image: postgres:latest
+    volumes:
+      - db-data:/var/lib/postgresql
+    environment:
+      POSTGRES_DB: "weather"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "rtf558Ur"
+    ports:
+      - "5432:5432"
+
+volumes:
+  db-data:

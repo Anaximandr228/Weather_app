@@ -4,13 +4,14 @@ import requests
 from flask import Flask, render_template, request, make_response, jsonify
 import json
 from models import db, Users
-from config import password, db_name, user
+from config import password, db_name, user, host
 
 # Подключение к базе данных
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql://{user}:{password}@localhost/{db_name}'
+app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql://{user}:{password}@{host}/{db_name}'
 app.config['SECRET_KEY'] = 'secret-key-goes-here'
 db.init_app(app)
+
 
 # Получение координат города с помощь API
 def weather_results(city_name):
@@ -23,11 +24,13 @@ def weather_results(city_name):
                data))
     return result
 
+
 # Разбиение координат на долготу и широту
 def get_coordinates(result):
     coordinate = result[0]['GeoObject']['Point']['pos']
     coordinates = coordinate.split(' ')
     return coordinates
+
 
 # Объявление главной страницы
 @app.route('/', methods=['GET', 'POST'])
@@ -82,6 +85,7 @@ def render_results():
         users_list = Users.query.distinct(Users.city_name).filter_by(user_id=user_id).all()
         return render_template('index.html', users_list=users_list, user_id=user_id)
 
+
 # Объявление API для просмотра статитики запрашиваемых городов
 @app.route('/amount', methods=['GET'])
 def create_amount_list():
@@ -95,6 +99,7 @@ def create_amount_list():
             amount_list[city_list[i]] = Users.query.filter_by(city_name=city_list[i]).count()
     return jsonify(amount_list)
 
+
 # Запуск приложения
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, host="0.0.0.0")
