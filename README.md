@@ -15,10 +15,9 @@
 <img src="https://drive.google.com/uc?export=view&id=1FUHjr5tjlrBP5t31eAgzxjw6jgUxApaX">
 
 ## Для запуска проекта:
-1.Создайте пустую базу данных PostgreSQL<br/>
-2.В файле config.py и docker-compose.yml внесите свои данные базы данных PostgreSQL<br/>
-3.Создайте контейнеры с помощью команды "docker compose build" 
-4.Запустите проект с помощью команды "docker compose up"
+1.В файле config.py и docker-compose.yml внесите свои данные базы данных PostgreSQL<br/>
+2.Создайте контейнеры с помощью команды "docker compose build" 
+3.Запустите проект с помощью команды "docker compose up"
 
 ### Используемы библиотеки
 Все используемы библиотеки перечислены в файле "requirements.txt"
